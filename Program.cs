@@ -14,18 +14,40 @@ namespace library
       Book harryPotterAndTheSorcerersStone = new Book("Harry Potter and the Sorcerer's Stone", "J.K.Rowling", true);
 
       Library lb = new Library("Boise", "Library!");
+      bool inLibrary = true;
+
+
       lb.AddBook(whereTheSidewalkEnds);
       lb.AddBook(theHobbit);
       lb.AddBook(theLionTheWitchAndTheWardrobe);
       lb.AddBook(harryPotterAndTheSorcerersStone);
 
 
-      System.Console.WriteLine($"Welcome to the {lb.Name} in {lb.Location}.");
-      System.Console.WriteLine("Select a book number to checkout (Q)uit, or (R)eturn a book");
-      lb.PrintBooks();
+      while (inLibrary)
+      {
+        System.Console.WriteLine($"Welcome to the {lb.Name} in {lb.Location}.");
+        System.Console.WriteLine("Select a book number to checkout (Q)uit, or (R)eturn a book");
+        lb.PrintBooks();
 
-      string selection = Console.ReadLine();
-      lb.Checkout(selection);
+        string selection = Console.ReadLine();
+        if (selection == "q")
+        {
+          inLibrary = false;
+        }
+        else if (selection == "r")
+        {
+          if (lb.CheckedOut.Count < 1)
+          {
+            System.Console.WriteLine("You don't have any books to return");
+            continue;
+          }
+          System.Console.WriteLine("Which Book would you like to return?");
+          lb.PrintCheckedBooks();
+          string returnSelection = Console.ReadLine();
+          lb.ReturnBook(returnSelection);
+        }
+        else { lb.Checkout(selection); }
+      }
     }
   }
 }
