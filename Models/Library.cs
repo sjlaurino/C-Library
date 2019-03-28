@@ -48,28 +48,36 @@ namespace console_library.Models
     public void ReturnBook(string selection)
     {
       Book selectedBook = ValidateBook(selection, CheckedOut);
-      if (selectedBook != null)
+      if (selectedBook == null)
       {
-        selectedBook.Available = true;
-        CheckedOut.Remove(selectedBook);
-        Books.Add(selectedBook);
-        System.Console.WriteLine($"You have successfully returned {selectedBook.Title}");
+        bool selecting = true;
+        while (selecting)
+        {
+          Console.Clear();
+          System.Console.WriteLine("Invalid Selection");
+          PrintCheckedBooks();
+          selection = Console.ReadLine();
+          selectedBook = ValidateBook(selection, CheckedOut);
+          if (selectedBook != null)
+          {
+            selecting = false;
+          }
+        }
       }
-      else
-      {
-        Console.Clear();
-        System.Console.WriteLine("Invalid Selection");
-        return;
-      }
+      selectedBook.Available = true;
+      CheckedOut.Remove(selectedBook);
+      Books.Add(selectedBook);
+      System.Console.WriteLine($"You have successfully returned {selectedBook.Title}");
     }
     private Book ValidateBook(string selection, List<Book> booklist)
     {
       int bookIndex;
       bool valid = Int32.TryParse(selection, out bookIndex);
-      if (!valid || bookIndex < 0 || bookIndex > Books.Count)
+      if (!valid || bookIndex < 1 || bookIndex > booklist.Count)
       {
         return null;
       }
+
       return booklist[bookIndex - 1];
     }
 
