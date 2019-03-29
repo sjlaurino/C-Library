@@ -55,6 +55,7 @@ namespace console_library.Models
         {
           Console.Clear();
           System.Console.WriteLine("Invalid Selection");
+          System.Console.WriteLine("Which book would you like to return?");
           PrintCheckedBooks();
           selection = Console.ReadLine();
           selectedBook = ValidateBook(selection, CheckedOut);
